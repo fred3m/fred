@@ -198,16 +198,19 @@ class InteractiveHist(InteractivePlot):
         bin that has been selected.
     
     """
-    def __init__(self, butler, df=None, tract=9813, filters=None, band=None):
+    def __init__(self, butler, df=None, tract=9813, filters=None, band=None, cursorColor=None):
         if filters is None:
             filters = "grizy"
         if band is None:
             band = "HSC-R"
+        if cursorColor is None:
+            cursorColor = "#c9392e"
 
         self.butler = butler
         self.tract=tract        
         self.filters = filters
         self.band = band
+        self.cursorColor = cursorColor
         
         if df is None:
             cat = butler.get(
@@ -386,7 +389,7 @@ class InteractiveHist(InteractivePlot):
             norm=norm,
         )
         # Create the cursor (with zero size, so it is not drawn)
-        self.rect = patches.Rectangle((np.median(x), np.median(y)), 0, 0, color="#aac5f0")
+        self.rect = patches.Rectangle((np.median(x), np.median(y)), 0, 0, color=self.cursorColor)
         self.ax[0].add_patch(self.rect)
         self.ax[0].set_xlabel(self.xColumn)
         self.ax[0].set_ylabel(self.yColumn)
